@@ -25,32 +25,10 @@ public class PhoneController {
 	//메소드g,s
 	
 	//메소드 일반
-	@RequestMapping(value="/writeForm", method= {RequestMethod.GET, RequestMethod.POST})
-	public String writeForm() {
-		
-		System.out.println("phone/writeForm");
-		//포워드할 주소
-		return "writeForm";
-	}
-	
-	@RequestMapping(value="/write", method = {RequestMethod.GET,RequestMethod.POST})
-	public String write(@ModelAttribute PersonVo personVo) {//저장
-		
-		System.out.println("phone/write");
-		System.out.println(personVo);
-		
-		//저장
-		phoneDao.personInsert(personVo);
-		
-		//리다이렉트 
-		return "redirect:/phone/list";
-		
-	}
-	
 	@RequestMapping(value="/list", method = {RequestMethod.GET, RequestMethod.POST})
 	public String list(Model model) {
 		
-		System.out.println("phone/list");
+		System.out.println("phoneDao.getPersonList()실행");
 		
 		//dao에서 리스트를 가져온다-> 필드에 넣어뒀음
 		List<PersonVo> personList = phoneDao.getPersonList();
@@ -63,6 +41,33 @@ public class PhoneController {
 		return "list";
 	}
 	
+	
+	@RequestMapping(value="/writeForm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String writeForm() {
+		
+		System.out.println("phone/writeForm");
+		//포워드할 주소
+		return "writeForm";
+	}
+	
+		
+	
+	@RequestMapping(value="/write", method = {RequestMethod.GET,RequestMethod.POST})
+	public String write(@ModelAttribute PersonVo personVo) {//저장
+		
+		System.out.println("phone/write");
+		System.out.println(personVo);
+
+		
+		//저장
+		phoneDao.personInsert(personVo);
+		
+		//리다이렉트 
+		return "redirect:/phone/list";
+		
+	}
+
+	
 	@RequestMapping(value = "/delete", method = {RequestMethod.GET, RequestMethod.POST})
 	public String delete(@RequestParam("personId") int personId) {
 		
@@ -73,6 +78,7 @@ public class PhoneController {
 		return "redirect:/phone/list";
 		
 	}
+	
 	
 	@RequestMapping(value="/updateForm", method = {RequestMethod.GET, RequestMethod.POST} )
 	public String updateForm(@RequestParam("personId") int personId, Model model) {
@@ -86,6 +92,7 @@ public class PhoneController {
 		return "updateForm";
 	}
 	
+	
 	@RequestMapping(value="/update", method = {RequestMethod.GET, RequestMethod.POST})
 	public String update(@ModelAttribute PersonVo personVo) {
 		
@@ -98,65 +105,7 @@ public class PhoneController {
 		return "redirect:/phone/list";
 	}
 	
-	@RequestMapping(value="/test", method = {RequestMethod.GET, RequestMethod.POST})
-	public String test(@RequestParam(value="name") String name, 
-						@RequestParam(value="age") int age) {
-		
-		System.out.println(name);
-		System.out.println(age);
-		
-		return "";
-	}
-	
-	//파라미터 
-	@RequestMapping(value="/view", method = {RequestMethod.GET, RequestMethod.POST})
-	public String view(@RequestParam(value="no") int no) {
-		
-		System.out.println(no +"번글 가져오기");
-		
-		return "";
-	}
-	
-	//PathVariable -> 파라미터가 아니다. {}위치는 상관없음
-	@RequestMapping(value="/view/{no}", method = {RequestMethod.GET, RequestMethod.POST})
-	public String viewNo(@PathVariable("no") int no) {
-		
-		System.out.println(no +"번글 가져오기");
-		
-		return "";
-	}
-	
-	//네이버 블로그 
-	//localhost:8088/phonebook3/phone/aaa
-	@RequestMapping(value="/{id}", method = {RequestMethod.GET, RequestMethod.POST})
-	public String blog(@PathVariable("id") String id) {
-		
-		System.out.println(id + "님의 블로그 가져오기");
-		
-		return "";
-	}
-	
-	/*
-	@RequestMapping(value="/phone/write", method = {RequestMethod.GET,RequestMethod.POST})
-	public String write(@RequestParam("name") String name,
-						@RequestParam("hp") String hp,
-						@RequestParam("company") String company) {//파라미터를 따로 독립적으로 받아와야하는 경우 사용 
-		
-		System.out.println("phone/write");
-		System.out.println(name+"/"+hp+"/"+ company);
-		
-		//저장
-		PersonVo personVo = new PersonVo(name,hp,company);
-		
-		PhoneDao phoneDao = new PhoneDao();
-		phoneDao.personInsert(personVo);
-		
-		return "";
-		
-	}
-	*/
-	
-	
+
 	
 	
 }
