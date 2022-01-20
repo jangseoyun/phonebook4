@@ -68,8 +68,9 @@
 			<artifactId>mybatis-spring</artifactId>
 			<version>1.2.0</version>
 		</dependency>
-
+		
 	</dependencies>
+		
 	<!-- spring 다운로드 소스 -->
 
 	<build>
