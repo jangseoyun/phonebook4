@@ -52,11 +52,11 @@
 	<!-- update 한명의 데이터 수정하기-->
 	<update id="update" parameterType="com.javaex.vo.PersonVo">
 		<![CDATA[
-		update person
-		set name = #{name},
-	    	hp = #{hp},
-	    	company = #{company}
-		where person_id = #{personId}
+			update person
+			set name = #{name},
+		    	hp = #{hp},
+		    	company = #{company}
+			where person_id = #{personId}
 		]]>
 	</update>
 	
