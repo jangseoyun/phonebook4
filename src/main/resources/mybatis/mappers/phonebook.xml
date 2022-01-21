@@ -2,9 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="phonebook">
+
+	<resultMap id="resultMapPersonVo" type="com.javaex.vo.PersonVo" >
+		<result column="person_id" property="personId" />
+		<result column="name" property="name" />
+		<result column="hp" property="hp" />
+		<result column="company" property="company" />
+	</resultMap>
    
    <!-- 쿼리문 작성 -->
-	<select id="selectList" resultType="com.javaex.vo.PersonVo" >
+   <!-- list-->
+	<select id="selectList" resultMap="resultMapPersonVo" >
+		<![CDATA[
+			select  person_id,
+	        		name,
+	        		hp,
+	        		company
+			from person
+			order by person_id desc
+		]]>
+	</select>
+	
+	<select id="sampleList" resultType="PersonVo" >
 		<![CDATA[
 			select  person_id personId,
 	        		name,
@@ -17,7 +36,7 @@
 	
 	<!-- insert는 저장만 하면 끝 따라서 resultType은 없다. 숫자로 오는것은 그냥 오는 것 -->
 	<!-- 데이터를 외부에서 받아서 기능처리를 해야함 parameterType -->
-	<insert id="insert" parameterType="com.javaex.vo.PersonVo">
+	<insert id="insert2" parameterType="map">
 		<![CDATA[
 			insert into person
 			values(
@@ -28,6 +47,19 @@
 			)
 		]]>
 	</insert>
+
+	
+	<insert id="insert" parameterType="PersonVo">
+		<![CDATA[
+			insert into person
+			values(
+				seq_person_id.nextval, 
+				#{name},
+				#{hp},
+				#{company}
+			)
+		]]>
+	</insert> 
 	
 	<!-- 삭제 -->
 	<delete id="delete" parameterType="int">
@@ -38,9 +70,20 @@
 	</delete>
 	
 	<!-- updateForm 한명의 데이터 불러오기 -->
-	<select id="updateForm" parameterType="int" resultType="com.javaex.vo.PersonVo">
+	<select id="updateForm2" parameterType="int" resultType="map">
 		<![CDATA[
-			select  person_id personId,
+			select  person_id,
+			        name,
+			        hp,
+			        company
+			from person
+			where person_id = #{personId}
+		]]>
+	</select>
+	
+	<select id="updateForm" parameterType="int" resultType="PersonVo">
+		<![CDATA[
+			select  person_id,
 			        name,
 			        hp,
 			        company
@@ -50,7 +93,7 @@
 	</select>
 	
 	<!-- update 한명의 데이터 수정하기-->
-	<update id="update" parameterType="com.javaex.vo.PersonVo">
+	<update id="update" parameterType="PersonVo">
 		<![CDATA[
 			update person
 			set name = #{name},
@@ -59,6 +102,5 @@
 			where person_id = #{personId}
 		]]>
 	</update>
-	
 
 </mapper>

@@ -1,6 +1,8 @@
 package com.javaex.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,32 @@ public class PhoneDao {
 	//전체 리스트 가져오기
 	public List<PersonVo> getPersonList(){
 		
+		System.out.println("listDao 실행");
+		
 		List<PersonVo> personList = sqlSession.selectList("phonebook.selectList");
 		System.out.println(personList);
 
 		return personList;
+	}
+	
+	// 사람 추가 저장 --> 예제일뿐!
+	public int personInsert2(String name,String hp,String company) {
+		System.out.println("map으로 등록");
+		
+		Map<String, String>personMap = new HashMap<String, String>();
+		personMap.put("name", name);
+		personMap.put("hp", hp);
+		personMap.put("company", company);
+		System.out.println(personMap);
+		
+		//성공하면 무조건 숫자를 줌
+		int count = sqlSession.insert("phonebook.insert",personMap);
+		System.out.println(count+"건이 처리되었습니다");
+		
+		return 0;
+
+		//return sqlSession.insert("phonebook.insert",personVo);
+		
 	}
 	
 	
@@ -41,26 +65,50 @@ public class PhoneDao {
 	public int personDelete(int personId) {
 		
 		System.out.println("phoneDao.personDelete()실행");
-		return sqlSession.delete("phonebook.delete",personId);
+		int count = sqlSession.delete("phonebook.delete",personId);
+		
+		return count;
 		
 	}
 		
-		
+	
 	//사람 수정폼 (한명의 데이터 불러오기)
 	public PersonVo getPerson(int personId) {
 		
 		System.out.println("phoneDao.getPerson()실행");
-		PersonVo personVo = sqlSession.selectOne("phonebook.updateForm",personId);
-		System.out.println(personVo);
 		
-		return  personVo;
+		Map<String, Object> personMap = sqlSession.selectOne("phonebook.updateForm2",personId);
+		//key값 확인
+		System.out.println(personMap.keySet());
+		System.out.println(personMap);
+		
+		System.out.println(personMap.get("NAME"));
+		System.out.println(personMap.get("PERSON_ID"));
+		System.out.println(personMap.get("HP"));
+		System.out.println(personMap.get("COMPANY"));
+		
+		return null;
 	}
+	
+	/*
+	//사람 수정폼 (한명의 데이터 불러오기)
+		public PersonVo getPerson(int personId) {
+			
+			System.out.println("phoneDao.getPerson()실행");
+			PersonVo personVo = sqlSession.selectOne("phonebook.updateForm",personId);
+			System.out.println(personVo);
+			
+			return  personVo;
+	}*/
 		
 	// 사람 수정
 	public int personUpdate(PersonVo personVo) {
 
 		System.out.println("phoneDao.personUpdate()실행");
-		return sqlSession.update("phonebook.update",personVo);
+		
+		int count = sqlSession.update("phonebook.update",personVo);
+		
+		return count;
 	}
 	
 	
